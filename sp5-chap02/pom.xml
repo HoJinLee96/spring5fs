@@ -2,14 +2,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
-		http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>sp5</groupId>
-	<artifactId>sp5-chap02</artifactId>
+	<artifactId>sp5-chap02</artifactId> <!--프로젝트 식별자-->
 	<version>0.0.1-SNAPSHOT</version>
-
 	<dependencies>
-		<dependency>
+		<dependency> <!-- 5.0.2 릴리즈 버전의 spring-context 모듈 사용-->
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
 			<version>5.0.2.RELEASE</version>
@@ -19,6 +18,7 @@
 	<build>
 		<plugins>
 			<plugin>
+				<!-- 1.8버전 기준으로 자바 소스 컴파일하고 결과 클래스를 생성. -->
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.7.0</version>
 				<configuration>
