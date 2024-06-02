@@ -10,9 +10,12 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import config.AppCtx;
 import spring.ChangePasswordService;
 import spring.DuplicateMemberException;
+import spring.MemberInfoPrinter;
+import spring.MemberListPrinter;
 import spring.MemberNotFoundException;
 import spring.MemberRegisterService;
 import spring.RegisterRequest;
+import spring.VersionPrinter;
 import spring.WrongIdPasswordException;
 
 public class MainForSpring {
@@ -37,7 +40,19 @@ public class MainForSpring {
 				processChangeCommand(command.split(" "));
 				continue;
 			}
-//			위 세개 다 아닐 경우 도움말 while문이라 이런 방식으로 작성
+			else if(command.trim().equals("list")){
+				processListCommand();
+				continue;
+			}
+			else if(command.trim().startsWith("info ")&& command.trim().split(" ").length ==2){
+				processInfoCommand(command.split(" "));
+				continue;
+			}
+			else if(command.trim().equals("version")) {
+				processVersionCommand();
+				continue;
+			}
+//			위 조건이 다 아닐 경우 도움말 while문이라 이런 방식으로 작성
 			printHelp();
 		}
 	}
@@ -73,6 +88,21 @@ public class MainForSpring {
 			System.out.println("회원정보 확인해 주세요.\n");
 		}
 		
+	}
+	
+	private static void processListCommand() {
+		MemberListPrinter listPrinter = ctx.getBean("listPrinter",MemberListPrinter.class);
+		listPrinter.printAll();
+	}
+	
+	private static void processInfoCommand(String[] arg) {
+		MemberInfoPrinter infoPrinter = ctx.getBean("infoPrinter",MemberInfoPrinter.class);
+		infoPrinter.printMemberInfo(arg[1]);
+	}
+	
+	private static void processVersionCommand() {
+		VersionPrinter versionPrinter = ctx.getBean("versionPrinter",VersionPrinter.class);
+		versionPrinter.print();
 	}
 	
 	static public void printHelp() {
