@@ -13,6 +13,7 @@ import spring.MemberDao;
 import spring.MemberInfoPrinter;
 import spring.MemberNotFoundException;
 import spring.MemberRegisterService;
+import spring.MemberSummaryPrinter;
 import spring.RegisterRequest;
 import spring.VersionPrinter;
 import spring.WrongIdPasswordException;
@@ -88,8 +89,9 @@ public class MainForSpring {
 	
 	public static void processListCommand() {
 		MemberDao memberdao = ctx.getBean(MemberDao.class);
+		MemberSummaryPrinter memberSummaryPrinter = ctx.getBean(MemberSummaryPrinter.class);
 		Collection<Member> list = memberdao.selectAll();
-		list.forEach(m -> System.out.println(m.toString()));
+		list.forEach(m -> memberSummaryPrinter.print(m));
 	}
 	
 	public static void processInfoCommand(String args[]) {
