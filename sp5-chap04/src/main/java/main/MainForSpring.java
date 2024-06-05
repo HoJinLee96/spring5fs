@@ -3,16 +3,24 @@ package main;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Collection;
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import config.AppCtx;
+import spring.Member;
+import spring.MemberDao;
+import spring.MemberInfoPrinter;
+import spring.MemberNotFoundException;
 import spring.MemberRegisterService;
 import spring.RegisterRequest;
+import spring.VersionPrinter;
+import spring.WrongIdPasswordException;
 
 public class MainForSpring {
 
 	private static AnnotationConfigApplicationContext ctx;
+
 	public static void main(String[] args) throws IOException {
 		ctx = new AnnotationConfigApplicationContext(AppCtx.class);
 		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
@@ -29,19 +37,22 @@ public class MainForSpring {
 				continue;
 			}
 			// change로 시작하고 길이 확인
-//			else if (command.trim().startsWith("change ") && command.trim().split(" ").length == 4) {
-//				processChangeCommand(command.split(" "));
-//				continue;
-//			} else if (command.trim().equals("list")) {
-//				processListCommand();
-//				continue;
-//			} else if (command.trim().startsWith("info ") && command.trim().split(" ").length == 2) {
-//				processInfoCommand(command.split(" "));
-//				continue;
-//			} else if (command.trim().equals("version")) {
-//				processVersionCommand();
-//				continue;
-//			}
+			else if (command.trim().startsWith("change ") && command.trim().split(" ").length == 4) {
+				processChangeCommand(command.split(" "));
+				continue;
+			} 
+				else if (command.trim().equals("list")) {
+				processListCommand();
+				continue;
+			} 
+				else if (command.trim().startsWith("info ") && command.trim().split(" ").length == 2) {
+				processInfoCommand(command.split(" "));
+				continue;
+			} 
+				else if (command.trim().equals("version")) {
+				processVersionCommand();
+				continue;
+			}
 //				위 조건이 다 아닐 경우 도움말 while문이라 이런 방식으로 작성
 			printHelp();
 		}
@@ -49,21 +60,52 @@ public class MainForSpring {
 
 	public static void processNewCommand(String args[]) {
 		MemberRegisterService mrs = ctx.getBean(MemberRegisterService.class);
-		RegisterRequest request = new RegisterRequest(args[1],args[2],args[3],args[4]);
-		if(!request.passwordToConfirmPassword()) {
+		RegisterRequest request = new RegisterRequest(args[1], args[2], args[3], args[4]);
+		if (!request.passwordToConfirmPassword()) {
 			printHelp();
 			return;
 		}
 		try {
 			long id = mrs.regist(request);
-			System.out.println("당신의 아이디는 : "+id);
-		}catch(RuntimeException e) {
+			System.out.println("당신의 아이디는 : " + id);
+		} catch (RuntimeException e) {
 			System.out.println(e.getMessage());
 		}
-		
+
 //		System.out.println(mrs.regist(request));
 	}
+
+	public static void processChangeCommand(String args[]) {
+		MemberDao memberdao = ctx.getBean(MemberDao.class);
+		Member member = memberdao.selectByEmail(args[1]);
+		try {
+		member.changePassword(args[2], args[3]);
+		System.out.println("비밀번호 변경이 완료 되었습니다.");
+		}catch(WrongIdPasswordException e) {
+			System.out.println(e.getMessage());
+		}
+	}
 	
+	public static void processListCommand() {
+		MemberDao memberdao = ctx.getBean(MemberDao.class);
+		Collection<Member> list = memberdao.selectAll();
+		list.forEach(m -> System.out.println(m.toString()));
+	}
+	
+	public static void processInfoCommand(String args[]) {
+		MemberInfoPrinter infoPrinter = ctx.getBean(MemberInfoPrinter.class);
+		try {
+		infoPrinter.print(args[1]);
+		}catch(MemberNotFoundException e) {
+			System.out.println(e.getMessage());
+		}
+	}
+	
+	public static void processVersionCommand() {
+		VersionPrinter versionPrinter = ctx.getBean(VersionPrinter.class);
+		versionPrinter.print();
+	}
+
 	static public void printHelp() {
 		System.out.println();
 		System.out.println("잘못된 입력 입니다.");

@@ -24,7 +24,7 @@ public class Member {
 	
 	public void changePassword(String oldPassword, String newPassword) {
 		if(!this.password.equals(oldPassword))
-			throw new WrongIdPasswordException();
+			throw new WrongIdPasswordException("비밀번호가 일치하지 않습니다.");
 		this.password = newPassword;
 	}
 
@@ -51,5 +51,13 @@ public class Member {
 	public LocalDateTime getRegisterDateTime() {
 		return registerDateTime;
 	}
+
+	@Override
+	public String toString() {
+		return "Member [id=" + id + ", email=" + email + ", password=" + password + ", name=" + name
+				+ ", registerDateTime=" + registerDateTime + "]";
+	}
+	
+	
 
 }

@@ -1,5 +1,6 @@
 package spring;
 
+import java.util.Collection;
 import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,7 @@ public class MemberDao {
 		super();
 	}
 
-	public Member confirmEmail(String email) {
+	public Member selectByEmail(String email) {
 		return map.get(email);
 	}
 	
@@ -25,6 +26,12 @@ public class MemberDao {
 		map.put(member.getEmail(), member);
 		return member.getId();
 	}
-
 	
+	public Collection<Member> selectAll() {
+		return map.values();
+	}
+
+	public void update(Member member) {
+		map.put(member.getEmail(), member);
+	}
 }
