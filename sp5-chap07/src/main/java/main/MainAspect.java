@@ -3,7 +3,7 @@ package main;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import chap07.Calculator;
-import cinfig.AppCtx;
+import config.AppCtx;
 
 public class MainAspect {
 	public static void main(String[] args) {
