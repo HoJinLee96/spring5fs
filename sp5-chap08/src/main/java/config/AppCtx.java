@@ -3,11 +3,13 @@ package config;
 
 import org.apache.tomcat.jdbc.pool.DataSource;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 import spring.MemberDao;
 
 @Configuration
+@ComponentScan(basePackages= {"spring"})
 public class AppCtx {
 
 	@Bean(destroyMethod="close") // close = 커넥션 풀에 보관된 Connection을 닫는다.
