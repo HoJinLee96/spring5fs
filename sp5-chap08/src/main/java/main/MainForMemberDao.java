@@ -20,7 +20,7 @@ public class MainForMemberDao {
 		 ctx = new AnnotationConfigApplicationContext(AppCtx.class); 
 		memberDao = ctx.getBean("memberDao",MemberDao.class);
 		
-		RegisterRequest request = new RegisterRequest("st2035@naver.com","123","12","lee");
+		RegisterRequest request = new RegisterRequest("st2035@naver.com","123","123","lee");
 		try {
 		insert(request);
 		}catch(RuntimeException e) {
@@ -29,6 +29,7 @@ public class MainForMemberDao {
 		selectByEmail("st2035@naver.com");
 		selectAll();
 		count();
+		updateMember();
 	}
 	
 	public static void selectAll() {
@@ -53,5 +54,12 @@ public class MainForMemberDao {
 	
 	public static void count() {
 		System.out.println("회원 수 "+memberDao.count()+"명");
+	}
+	
+	public static void updateMember() {
+		Member member = memberDao.selectByEmail("st2035@naver.com");
+		member.changePassword(member.getPassword(), Double.toHexString(Math.random()));
+		memberDao.update(member);
+		System.out.println(member.getPassword() + "로 암호 변경");
 	}
 }
