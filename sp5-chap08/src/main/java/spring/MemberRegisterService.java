@@ -4,8 +4,9 @@ import java.time.LocalDateTime;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
-@Component
+@Component("memberRegSvc")
 public class MemberRegisterService {
 	
 	@Autowired
@@ -16,6 +17,7 @@ public class MemberRegisterService {
 		this.memberDao = memberDao;
 	}
 
+	@Transactional
 	public Long regist(RegisterRequest req) {
 		Member member = memberDao.selectByEmail(req.getEmail());
 		if (member != null) {

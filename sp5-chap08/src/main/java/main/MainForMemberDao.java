@@ -20,9 +20,13 @@ public class MainForMemberDao {
 		 ctx = new AnnotationConfigApplicationContext(AppCtx.class); 
 		memberDao = ctx.getBean("memberDao",MemberDao.class);
 		
-		RegisterRequest request = new RegisterRequest("st2035@naver.com","123","123","lee");
+		RegisterRequest req = new RegisterRequest(); 
+		req.setEmail("st2035@naver.com");
+		req.setName("lee");
+		req.setPassword("123");
+		req.setConfirmPassword("123");
 		try {
-		insert(request);
+		insert(req);
 		}catch(RuntimeException e) {
 			e.printStackTrace();
 		}

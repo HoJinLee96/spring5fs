@@ -1,20 +1,10 @@
 package spring;
 
-import java.time.LocalDateTime;
-
 public class RegisterRequest {
 	private String email;
 	private String password;
 	private String confirmPassword;
 	private String name;
-	
-	public RegisterRequest(String email, String password, String confirmPassword, String name) {
-		super();
-		this.email = email;
-		this.password = password;
-		this.confirmPassword = confirmPassword;
-		this.name = name;
-	}
 
 	public String getEmail() {
 		return email;
